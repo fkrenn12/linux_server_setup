@@ -3,20 +3,25 @@ Instruction and scripts for setup Linux Debian server
 ## On newly created server - before starting the installation 
 👉 Start putty<br>
 👉 Enter IP-Address and port number 22<br>
-👉 Login as **root** or sudo user
+👉 Login as **root** or sudo user<br>
 👉 Create and add server administration user and add to sudo<br>
-Use puttygen to create publickeys. 
-Best choice is to generate two keys. 
+
+On windows you can use "puttygen" to create publickeys. 
+The best secure option is to generate two separate keys with passphrase.<br>
+* Define temporary variables for keys on host.
+
 ```sh
 PUBLIC_KEY_USER="Copy public key from puttygen and insert here"
 PUBLIC_KEY_APP="Copy public key from puttygen and insert here"
 ```
+
+* Define temporary variables for ssh port and names on host.
 ```sh
 SSH_PORT=250
-USERNAME='admin'
+USERNAME='YourAdminUsername'
 APPNAME='YourApplicationName'
 ```
-
+* Creating users with ssh access and securing ssh ( no root login, publickey enabled ) 
 ```sh
 sudo echo "### Creating $USERNAME ###"
 sudo adduser $USERNAME
@@ -47,20 +52,18 @@ Match User $APPNAME
         AllowTcpForwarding yes
         GatewayPorts yes
         PermitTunnel yes" > /etc/ssh/sshd_config.d/$APPNAME.conf
-```
-
-```sh
+# configure ssh
 sudo echo "Port $SSH_PORT" >> /etc/ssh/sshd_config
 sudo echo 'PubkeyAuthentication yes' >> /etc/ssh/sshd_config
 sudo sed -i '/^PermitRootLogin[ \t]\+\w\+$/{ s//PermitRootLogin no/g; }' /etc/ssh/sshd_config
 sudo sed -i '/^PasswordAuthentication[ \t]\+\w\+$/{ s//PasswordAuthentication no/g; }' /etc/ssh/sshd_config
 ```
-
+* Restart ssh service and reboot
 ```sh
 sudo systemctl restart ssh.service
 sudo reboot
 ```
-Login as admin user over ssh with publickey authentication on new port 
+👉 Relogin as admin user over ssh with publickey authentication on new port now
 
 ## Installation
 👉 Copy and run installation scripts
