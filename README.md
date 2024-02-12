@@ -4,9 +4,10 @@ Instructions and scripts for setup Linux Debian server for running a docker appl
 👉 Start putty<br>
 👉 Enter IP-Address and port number 22<br>
 👉 Login as **root** or sudo user<br>
-👉 Create and add server administration user and add to sudo<br>
 
-On windows you can use "puttygen" to create publickeys. 
+### Create users with publickey ssh access  
+
+On Windows you can use "puttygen" to create publickeys. 
 The best secure option is to generate two separate keys with passphrase.<br>
 * Define temporary variables for keys on host.
 
@@ -23,7 +24,7 @@ SSH_PORT=250
 USERNAME='YourAdminUsername'
 APPNAME='YourApplicationName'
 ```
-* Creating users with ssh access and securing ssh ( no root login, publickey enabled ) 
+* Creating users with ssh access and secured ssh ( no root login, publickey enabled ) 
 ```sh
 sudo echo "### Creating $USERNAME ###"
 sudo adduser $USERNAME
