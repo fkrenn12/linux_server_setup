@@ -7,7 +7,10 @@ Instruction and scripts for setup Linux Debian server
 👉 Create and add server administration user and add to sudo<br>
 Modify "admin" for your own choice 
 ```sh
-PUBLIC_KEY="AAAAASSS"
+PUBLIC_KEY="Copy public key from puttygen and insert here"
+```
+```sh
+SSH_PORT=250
 USERNAME='admin'
 ```
 
@@ -27,6 +30,7 @@ Match User $USERNAME
 
 ```
 ```sh
+sudo echo "Port $SSH_PORT" >> /etc/ssh/sshd_config
 sudo echo 'PubkeyAuthentication yes' >> /etc/ssh/sshd_config
 sudo sed -i '/^PermitRootLogin[ \t]\+\w\+$/{ s//PermitRootLogin no/g; }' /etc/ssh/sshd_config
 sudo sed -i '/^PasswordAuthentication[ \t]\+\w\+$/{ s//PasswordAuthentication no/g; }' /etc/ssh/sshd_config
