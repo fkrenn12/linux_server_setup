@@ -5,9 +5,11 @@ Instruction and scripts for setup Linux Debian server
 👉 Enter IP-Address and port number 22<br>
 👉 Login as **root** or sudo user
 👉 Create and add server administration user and add to sudo<br>
-Modify "admin" for your own choice 
+Use puttygen to create publickeys. 
+Best choice is to generate two keys. 
 ```sh
-PUBLIC_KEY="Copy public key from puttygen and insert here"
+PUBLIC_KEY_USER="Copy public key from puttygen and insert here"
+PUBLIC_KEY_APP="Copy public key from puttygen and insert here"
 ```
 ```sh
 SSH_PORT=250
@@ -23,7 +25,7 @@ sudo usermod -aG sudo $USERNAME
 sudo mkdir -p /home/$USERNAME/.ssh && sudo touch /home/$USERNAME/.ssh/authorized_keys
 sudo chmod 700 /home/$USERNAME/.ssh && sudo chmod 600 /home/$USERNAME/.ssh/authorized_keys
 sudo chown -R $USERNAME /home/$USERNAME/.ssh
-sudo echo $PUBLIC_KEY >> /home/$USERNAME/.ssh/authorized_keys
+sudo echo $PUBLIC_KEY_USER >> /home/$USERNAME/.ssh/authorized_keys
 sudo echo "
 Match User $USERNAME
         X11Forwarding no
@@ -38,7 +40,7 @@ sudo adduser $APPNAME
 sudo mkdir -p /home/$APPNAME/.ssh && sudo touch /home/$APPNAME/.ssh/authorized_keys
 sudo chmod 700 /home/$APPNAME/.ssh && sudo chmod 600 /home/$APPNAME/.ssh/authorized_keys
 sudo chown -R $APPNAME /home/$APPNAME/.ssh
-sudo echo $PUBLIC_KEY >> /home/$APPNAME/.ssh/authorized_keys
+sudo echo $PUBLIC_KEY_APP >> /home/$APPNAME/.ssh/authorized_keys
 sudo echo "
 Match User $APPNAME
         X11Forwarding no
