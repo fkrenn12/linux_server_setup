@@ -1,5 +1,5 @@
-# **Linux Debian Server setup**
-Instruction and scripts for setup Linux Debian server 
+# 🚀 Linux Server setup (Debian) 🚀
+Instructions and scripts for setup Linux Debian server for running a docker application 
 ## On newly created server - before starting the installation 
 👉 Start putty<br>
 👉 Enter IP-Address and port number 22<br>
