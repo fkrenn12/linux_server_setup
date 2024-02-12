@@ -80,7 +80,7 @@ sudo apt-get update
 ```
 - Next step - installing packages
 ```sh
-sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin```
+sudo apt-get -y install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 ```
 - Postinstallation Step - Manage Docker as a non-root user
 ```sh
