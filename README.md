@@ -8,7 +8,7 @@ Instruction and scripts for setup Linux Debian server
 Modify "admin" for your own choice 
 ```sh
 PUBLIC_KEY="AAAAASSS"
-USERNAME='admin1'
+USERNAME='admin'
 ```
 
 ```sh
@@ -25,6 +25,11 @@ Match User $USERNAME
         GatewayPorts yes
         PermitTunnel yes" > /etc/ssh/sshd_config.d/$USERNAME.conf
 
+```
+```sh
+sudo echo 'PubkeyAuthentication yes' >> /etc/ssh/sshd_config
+sudo sed -i '/^PermitRootLogin[ \t]\+\w\+$/{ s//PermitRootLogin no/g; }' /etc/ssh/sshd_config
+sudo sed -i '/^PasswordAuthentication[ \t]\+\w\+$/{ s//PasswordAuthentication no/g; }' /etc/ssh/sshd_config
 ```
 
 ```sh
