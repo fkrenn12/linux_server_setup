@@ -12,6 +12,8 @@ The best secure option is to generate two separate keys with passphrase.<br>
 
 ```sh
 PUBLIC_KEY_USER="Copy public key from puttygen and insert here"
+```
+```sh
 PUBLIC_KEY_APP="Copy public key from puttygen and insert here"
 ```
 
