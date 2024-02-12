@@ -45,6 +45,11 @@ apt-get update
 ```sh
 apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin```
 ```
+- Postinstallation Step - Manage Docker as a non-root user
+```sh
+groupadd docker
+sudo usermod -aG docker application_name
+```
 
-👉 Docker CLI<br>
-👉 Docker compose<br>
+👉 Docker CLI 👉 Docker compose<br>
+Maybe already done by install?
