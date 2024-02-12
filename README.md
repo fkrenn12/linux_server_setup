@@ -12,9 +12,14 @@ PUBLIC_KEY="Copy public key from puttygen and insert here"
 ```sh
 SSH_PORT=250
 USERNAME='admin'
+APPNAME='YourApplicationName'
 ```
 
 ```sh
+sudo echo "### Creating $APPNAME ###"
+sudo adduser $APPNAME
+sudo usermod -aG sudo $APPNAME
+sudo echo "### Creating $USERNAME ###"
 sudo adduser $USERNAME
 sudo usermod -aG sudo $USERNAME
 sudo mkdir -p /home/$USERNAME/.ssh && sudo touch /home/$USERNAME/.ssh/authorized_keys
@@ -27,8 +32,8 @@ Match User $USERNAME
         AllowTcpForwarding yes
         GatewayPorts yes
         PermitTunnel yes" > /etc/ssh/sshd_config.d/$USERNAME.conf
-
 ```
+
 ```sh
 sudo echo "Port $SSH_PORT" >> /etc/ssh/sshd_config
 sudo echo 'PubkeyAuthentication yes' >> /etc/ssh/sshd_config
@@ -37,24 +42,21 @@ sudo sed -i '/^PasswordAuthentication[ \t]\+\w\+$/{ s//PasswordAuthentication no
 ```
 
 ```sh
-systemctl restart ssh.service
+sudo systemctl restart ssh.service
+sudo reboot
 ```
+Login as admin user over ssh with publickey authentication on new port 
 
 ## Installation
 👉 Copy and run installation scripts
 ```sh
-apt-get -y update
-apt-get -y install mc
-apt-get -y install htop
-apt-get -y install git
-git --version
+sudo apt-get -y update
+sudo apt-get -y install mc
+sudo apt-get -y install htop
+sudo apt-get -y install git
+sudo git --version
 ```
 
-👉 Create and add application user/group<br>
-Modify application_name
-```sh
-sudo  useradd -d /home/application_name -p password application_name
-```
 👉 Docker installation<br>
 Look here for details 
 [Docker installation on Debian](https://docs.docker.com/engine/install/debian/)<br>
@@ -70,19 +72,19 @@ sudo chmod a+r /etc/apt/keyrings/docker.asc
 - Add the repository to Apt sources 
 
 ```sh
-echo \
+sudo echo \
   "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/debian \
   $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
-  tee /etc/apt/sources.list.d/docker.list > /dev/null
-apt-get update
+  sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+sudo apt-get update
 ```
 - Next step - installing packages
 ```sh
-apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin```
+sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin```
 ```
 - Postinstallation Step - Manage Docker as a non-root user
 ```sh
-groupadd docker
+sudo groupadd docker
 sudo usermod -aG docker application_name
 ```
 
