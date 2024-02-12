@@ -16,12 +16,10 @@ APPNAME='YourApplicationName'
 ```
 
 ```sh
-sudo echo "### Creating $APPNAME ###"
-sudo adduser $APPNAME
-sudo usermod -aG sudo $APPNAME
 sudo echo "### Creating $USERNAME ###"
 sudo adduser $USERNAME
 sudo usermod -aG sudo $USERNAME
+# ssh access
 sudo mkdir -p /home/$USERNAME/.ssh && sudo touch /home/$USERNAME/.ssh/authorized_keys
 sudo chmod 700 /home/$USERNAME/.ssh && sudo chmod 600 /home/$USERNAME/.ssh/authorized_keys
 sudo chown -R $USERNAME /home/$USERNAME/.ssh
@@ -32,6 +30,21 @@ Match User $USERNAME
         AllowTcpForwarding yes
         GatewayPorts yes
         PermitTunnel yes" > /etc/ssh/sshd_config.d/$USERNAME.conf
+        
+sudo echo "### Creating $APPNAME ###"
+sudo adduser $APPNAME
+# sudo usermod -aG sudo $APPNAME
+# ssh access
+sudo mkdir -p /home/$APPNAME/.ssh && sudo touch /home/$APPNAME/.ssh/authorized_keys
+sudo chmod 700 /home/$APPNAME/.ssh && sudo chmod 600 /home/$APPNAME/.ssh/authorized_keys
+sudo chown -R $APPNAME /home/$APPNAME/.ssh
+sudo echo $PUBLIC_KEY >> /home/$APPNAME/.ssh/authorized_keys
+sudo echo "
+Match User $APPNAME
+        X11Forwarding no
+        AllowTcpForwarding yes
+        GatewayPorts yes
+        PermitTunnel yes" > /etc/ssh/sshd_config.d/$APPNAME.conf
 ```
 
 ```sh
