@@ -61,8 +61,8 @@ sudo git --version
 Look here for details 
 [Docker installation on Debian](https://docs.docker.com/engine/install/debian/)<br>
 - Set up Docker's apt repository.
-- - Add the repository to Apt sources 
-- - Next step - installing packages
+- Add the repository to Apt sources 
+- Installing packages
 ```sh
 # Add Docker's official GPG key:
 sudo apt-get update
@@ -78,7 +78,7 @@ sudo apt-get update
 sudo apt-get -y install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 ```
 
-- Postinstallation Step - allow manage Docker as a non-root user
+- Postinstallation - allow manage Docker as a non-root user
 ```sh
 APPNAME='YourApplicationName'
 sudo groupadd docker
