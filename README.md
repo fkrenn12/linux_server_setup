@@ -136,7 +136,7 @@ sudo apt-get update
 sudo apt-get -y install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 ```
 
-- Postinstallation - allow manage Docker as a non-root user
+- Postinstallation - allows managing Docker as a ### non-root ### user
 ```sh
 APPNAME='YourApplicationName'
 sudo groupadd docker
