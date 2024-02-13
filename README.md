@@ -61,6 +61,35 @@ sudo echo 'PubkeyAuthentication yes' >> /etc/ssh/sshd_config
 sudo sed -i '/^PermitRootLogin[ \t]\+\w\+$/{ s//PermitRootLogin no/g; }' /etc/ssh/sshd_config
 sudo sed -i '/^PasswordAuthentication[ \t]\+\w\+$/{ s//PasswordAuthentication no/g; }' /etc/ssh/sshd_config
 ```
+
+```sh
+function create_ssh_access(){
+  sudo mkdir -p /home/$1/.ssh && sudo touch /home/$1/.ssh/authorized_keys
+  sudo chmod 700 /home/$1/.ssh && sudo chmod 600 /home/$1/.ssh/authorized_keys
+  sudo chown -R $1 /home/$1/.ssh
+  sudo echo $2 >> /home/$1/.ssh/authorized_keys
+  sudo echo "
+  Match User $1
+        X11Forwarding no
+        AllowTcpForwarding yes
+        GatewayPorts yes
+        PermitTunnel yes" > /etc/ssh/sshd_config.d/$1.conf
+}
+sudo echo "### Creating $USERNAME ###"
+sudo adduser $USERNAME
+sudo usermod -aG sudo $USERNAME
+create_ssh_access($USERNAME, $PUBLIC_KEY_USER)        
+sudo echo "### Creating $APPNAME ###"
+sudo adduser $APPNAME
+# sudo usermod -aG sudo $APPNAME
+create_ssh_access($APPNAME, $PUBLIC_KEY_APP)
+# configure ssh
+# sudo echo "Port $SSH_PORT" >> /etc/ssh/sshd_config
+# sudo echo 'PubkeyAuthentication yes' >> /etc/ssh/sshd_config
+# sudo sed -i '/^PermitRootLogin[ \t]\+\w\+$/{ s//PermitRootLogin no/g; }' /etc/ssh/sshd_config
+# sudo sed -i '/^PasswordAuthentication[ \t]\+\w\+$/{ s//PasswordAuthentication no/g; }' /etc/ssh/sshd_config
+```
+
 * Restart ssh service and reboot
 ```sh
 sudo systemctl restart ssh.service
@@ -112,5 +141,3 @@ sudo groupadd docker
 sudo usermod -aG docker $APPNAME
 ```
 
-👉 Docker CLI 👉 Docker compose<br>
-Maybe already done by install?
