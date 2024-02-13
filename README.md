@@ -78,11 +78,13 @@ create_ssh_access(){
 sudo echo "### Creating $USERNAME ###"
 sudo adduser $USERNAME
 sudo usermod -aG sudo $USERNAME
-create_ssh_access $USERNAME $PUBLIC_KEY_USER        
+sudo bash -c "$(declare -f create_ssh_access); create_ssh_access $USERNAME $PUBLIC_KEY_USER"
+# create_ssh_access $USERNAME $PUBLIC_KEY_USER        
 sudo echo "### Creating $APPNAME ###"
 sudo adduser $APPNAME
 # sudo usermod -aG sudo $APPNAME
-create_ssh_access $APPNAME $PUBLIC_KEY_APP
+sudo bash -c "$(declare -f create_ssh_access); create_ssh_access $APPNAME $PUBLIC_KEY_APP"
+# create_ssh_access $APPNAME $PUBLIC_KEY_APP
 # configure ssh
 # sudo echo "Port $SSH_PORT" >> /etc/ssh/sshd_config
 # sudo echo 'PubkeyAuthentication yes' >> /etc/ssh/sshd_config
