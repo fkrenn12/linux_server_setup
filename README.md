@@ -63,7 +63,7 @@ sudo sed -i '/^PasswordAuthentication[ \t]\+\w\+$/{ s//PasswordAuthentication no
 ```
 
 ```sh
-function create_ssh_access(){
+create_ssh_access(){
   sudo mkdir -p /home/$1/.ssh && sudo touch /home/$1/.ssh/authorized_keys
   sudo chmod 700 /home/$1/.ssh && sudo chmod 600 /home/$1/.ssh/authorized_keys
   sudo chown -R $1 /home/$1/.ssh
@@ -78,11 +78,11 @@ function create_ssh_access(){
 sudo echo "### Creating $USERNAME ###"
 sudo adduser $USERNAME
 sudo usermod -aG sudo $USERNAME
-create_ssh_access($USERNAME, $PUBLIC_KEY_USER)        
+create_ssh_access $USERNAME $PUBLIC_KEY_USER        
 sudo echo "### Creating $APPNAME ###"
 sudo adduser $APPNAME
 # sudo usermod -aG sudo $APPNAME
-create_ssh_access($APPNAME, $PUBLIC_KEY_APP)
+create_ssh_access $APPNAME $PUBLIC_KEY_APP
 # configure ssh
 # sudo echo "Port $SSH_PORT" >> /etc/ssh/sshd_config
 # sudo echo 'PubkeyAuthentication yes' >> /etc/ssh/sshd_config
