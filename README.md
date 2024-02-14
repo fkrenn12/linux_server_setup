@@ -11,18 +11,16 @@ On Windows you can use "puttygen" to create publickeys.
 The best secure option is to generate two separate keys with passphrase.<br>
 * Define temporary variables for keys on host.
 
-```sh
-PUBLIC_KEY_USER="Copy public key from puttygen and insert here"
-```
-```sh
-PUBLIC_KEY_APP="Copy public key from puttygen and insert here"
-```
-
-* Define temporary variables for ssh port and names on host.
+* Define temporary variables for ssh port and names with publickey on host.
 ```sh
 SSH_PORT=250
-USERNAME='YourAdminUsername'
-APPNAME='YourApplicationName'
+read -p 'Administrator-Username: ' USERNAME
+echo 'Generate the keypair and copy publickey'
+read -p "Paste public Key for $USERNAME :" PUBLIC_KEY_USER
+read -p 'Appname: ' APPNAME
+echo 'Generate the keypair and copy publickey'
+read -p "Paste public Key for $APPNAME :" PUBLIC_KEY_APP
+
 ```
 * Creating users with ssh access and secured ssh ( no root login, publickey enabled ) 
 ```sh
@@ -62,34 +60,33 @@ sudo sed -i '/^PermitRootLogin[ \t]\+\w\+$/{ s//PermitRootLogin no/g; }' /etc/ss
 sudo sed -i '/^PasswordAuthentication[ \t]\+\w\+$/{ s//PasswordAuthentication no/g; }' /etc/ssh/sshd_config
 ```
 
+* Creating users with ssh access and secured ssh ( no root login, publickey enabled ) 
+
 ```sh
 create_ssh_access(){
   sudo mkdir -p /home/$1/.ssh && sudo touch /home/$1/.ssh/authorized_keys
   sudo chmod 700 /home/$1/.ssh && sudo chmod 600 /home/$1/.ssh/authorized_keys
   sudo chown -R $1 /home/$1/.ssh
   sudo echo $2 >> /home/$1/.ssh/authorized_keys
-  sudo echo "
-  Match User $1
+  sudo echo "Match User $1
         X11Forwarding no
         AllowTcpForwarding yes
         GatewayPorts yes
         PermitTunnel yes" > /etc/ssh/sshd_config.d/$1.conf
 }
 sudo echo "### Creating $USERNAME ###"
-sudo adduser $USERNAME
+sudo adduser --gecos GECOS $USERNAME
 sudo usermod -aG sudo $USERNAME
 sudo bash -c "$(declare -f create_ssh_access); create_ssh_access $USERNAME $PUBLIC_KEY_USER"
-# create_ssh_access $USERNAME $PUBLIC_KEY_USER        
 sudo echo "### Creating $APPNAME ###"
-sudo adduser $APPNAME
+sudo adduser --gecos GECOS $APPNAME
 # sudo usermod -aG sudo $APPNAME
 sudo bash -c "$(declare -f create_ssh_access); create_ssh_access $APPNAME $PUBLIC_KEY_APP"
-# create_ssh_access $APPNAME $PUBLIC_KEY_APP
 # configure ssh
-# sudo echo "Port $SSH_PORT" >> /etc/ssh/sshd_config
-# sudo echo 'PubkeyAuthentication yes' >> /etc/ssh/sshd_config
-# sudo sed -i '/^PermitRootLogin[ \t]\+\w\+$/{ s//PermitRootLogin no/g; }' /etc/ssh/sshd_config
-# sudo sed -i '/^PasswordAuthentication[ \t]\+\w\+$/{ s//PasswordAuthentication no/g; }' /etc/ssh/sshd_config
+sudo echo "Port $SSH_PORT" >> /etc/ssh/sshd_config
+sudo echo 'PubkeyAuthentication yes' >> /etc/ssh/sshd_config
+sudo sed -i '/^PermitRootLogin[ \t]\+\w\+$/{ s//PermitRootLogin no/g; }' /etc/ssh/sshd_config
+sudo sed -i '/^PasswordAuthentication[ \t]\+\w\+$/{ s//PasswordAuthentication no/g; }' /etc/ssh/sshd_config
 ```
 
 * Restart ssh service and reboot
