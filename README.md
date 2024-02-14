@@ -20,44 +20,6 @@ read -p "Paste public Key for $USERNAME :" PUBLIC_KEY_USER
 read -p 'Appname: ' APPNAME
 echo 'Generate the keypair and copy publickey'
 read -p "Paste public Key for $APPNAME :" PUBLIC_KEY_APP
-
-```
-* Creating users with ssh access and secured ssh ( no root login, publickey enabled ) 
-```sh
-sudo echo "### Creating $USERNAME ###"
-sudo adduser $USERNAME
-sudo usermod -aG sudo $USERNAME
-# ssh access
-sudo mkdir -p /home/$USERNAME/.ssh && sudo touch /home/$USERNAME/.ssh/authorized_keys
-sudo chmod 700 /home/$USERNAME/.ssh && sudo chmod 600 /home/$USERNAME/.ssh/authorized_keys
-sudo chown -R $USERNAME /home/$USERNAME/.ssh
-sudo echo $PUBLIC_KEY_USER >> /home/$USERNAME/.ssh/authorized_keys
-sudo echo "
-Match User $USERNAME
-        X11Forwarding no
-        AllowTcpForwarding yes
-        GatewayPorts yes
-        PermitTunnel yes" > /etc/ssh/sshd_config.d/$USERNAME.conf
-        
-sudo echo "### Creating $APPNAME ###"
-sudo adduser $APPNAME
-# sudo usermod -aG sudo $APPNAME
-# ssh access
-sudo mkdir -p /home/$APPNAME/.ssh && sudo touch /home/$APPNAME/.ssh/authorized_keys
-sudo chmod 700 /home/$APPNAME/.ssh && sudo chmod 600 /home/$APPNAME/.ssh/authorized_keys
-sudo chown -R $APPNAME /home/$APPNAME/.ssh
-sudo echo $PUBLIC_KEY_APP >> /home/$APPNAME/.ssh/authorized_keys
-sudo echo "
-Match User $APPNAME
-        X11Forwarding no
-        AllowTcpForwarding yes
-        GatewayPorts yes
-        PermitTunnel yes" > /etc/ssh/sshd_config.d/$APPNAME.conf
-# configure ssh
-sudo echo "Port $SSH_PORT" >> /etc/ssh/sshd_config
-sudo echo 'PubkeyAuthentication yes' >> /etc/ssh/sshd_config
-sudo sed -i '/^PermitRootLogin[ \t]\+\w\+$/{ s//PermitRootLogin no/g; }' /etc/ssh/sshd_config
-sudo sed -i '/^PasswordAuthentication[ \t]\+\w\+$/{ s//PasswordAuthentication no/g; }' /etc/ssh/sshd_config
 ```
 
 * Creating users with ssh access and secured ssh ( no root login, publickey enabled ) 
