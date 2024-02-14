@@ -29,7 +29,7 @@ create_ssh_access(){
   sudo mkdir -p /home/$1/.ssh && sudo touch /home/$1/.ssh/authorized_keys
   sudo chmod 700 /home/$1/.ssh && sudo chmod 600 /home/$1/.ssh/authorized_keys
   sudo chown -R $1 /home/$1/.ssh
-  sudo echo $2 >> /home/$1/.ssh/authorized_keys
+  echo $2 | sudo tee -a /home/$1/.ssh/authorized_keys > /dev/null
   sudo echo "Match User $1
         X11Forwarding no
         AllowTcpForwarding yes
@@ -39,11 +39,11 @@ create_ssh_access(){
 sudo echo "### Creating $USERNAME ###"
 sudo adduser --gecos GECOS $USERNAME
 sudo usermod -aG sudo $USERNAME
-sudo bash -c "$(declare -f create_ssh_access); create_ssh_access $USERNAME $PUBLIC_KEY_USER"
+sudo bash -c "$(declare -f create_ssh_access); create_ssh_access $USERNAME '$PUBLIC_KEY_USER'"
 sudo echo "### Creating $APPNAME ###"
 sudo adduser --gecos GECOS $APPNAME
 # sudo usermod -aG sudo $APPNAME
-sudo bash -c "$(declare -f create_ssh_access); create_ssh_access $APPNAME $PUBLIC_KEY_APP"
+sudo bash -c "$(declare -f create_ssh_access); create_ssh_access $APPNAME '$PUBLIC_KEY_APP'"
 # configure ssh
 echo "Port $SSH_PORT" | sudo tee -a /etc/ssh/sshd_config > /dev/null
 echo 'PubkeyAuthentication yes' | sudo tee -a /etc/ssh/sshd_config > /dev/null
