@@ -83,8 +83,8 @@ sudo adduser --gecos GECOS $APPNAME
 # sudo usermod -aG sudo $APPNAME
 sudo bash -c "$(declare -f create_ssh_access); create_ssh_access $APPNAME $PUBLIC_KEY_APP"
 # configure ssh
-sudo echo "Port $SSH_PORT" >> /etc/ssh/sshd_config
-sudo echo 'PubkeyAuthentication yes' >> /etc/ssh/sshd_config
+echo "Port $SSH_PORT" | sudo tee -a /etc/ssh/sshd_config > /dev/null
+echo 'PubkeyAuthentication yes' | sudo tee -a /etc/ssh/sshd_config > /dev/null
 sudo sed -i '/^PermitRootLogin[ \t]\+\w\+$/{ s//PermitRootLogin no/g; }' /etc/ssh/sshd_config
 sudo sed -i '/^PasswordAuthentication[ \t]\+\w\+$/{ s//PasswordAuthentication no/g; }' /etc/ssh/sshd_config
 ```
