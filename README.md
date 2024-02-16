@@ -9,7 +9,6 @@ Instructions and scripts for setup Linux Debian server for running a docker appl
 
 On Windows you can use "puttygen" to create publickeys. 
 The best secure option is to generate two separate keys with passphrase.<br>
-* Define temporary variables for keys on host.
 
 * Define temporary variables for ssh port and names with publickey on host.
 ```sh
@@ -50,17 +49,15 @@ echo "Port $SSH_PORT" | sudo tee -a /etc/ssh/sshd_config > /dev/null
 echo 'PubkeyAuthentication yes' | sudo tee -a /etc/ssh/sshd_config > /dev/null
 sudo sed -i '/^PermitRootLogin[ \t]\+\w\+$/{ s//PermitRootLogin no/g; }' /etc/ssh/sshd_config
 sudo sed -i '/^PasswordAuthentication[ \t]\+\w\+$/{ s//PasswordAuthentication no/g; }' /etc/ssh/sshd_config
-```
-
-* Restart ssh service and reboot
-```sh
 sudo systemctl restart ssh.service
 sudo reboot
 ```
-👉 Relogin as admin user over ssh with publickey authentication on new port now
+👉 Relogin now as admin user over ssh with publickey authentication on the new port
 
 ## Installation
-👉 Copy and run installation scripts
+👉 Copy and run installation scripts<br>
+This will install: mc, htop, git, gh, fail2ban<br>
+
 ```sh
 sudo apt-get -y update
 sudo apt-get -y install mc
@@ -75,6 +72,10 @@ curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo 
 sudo apt install fail2ban -y
 echo "backend = systemd" | sudo tee -a /etc/fail2ban/jail.d/defaults-debian.conf > /dev/null
 sudo systemctl restart fail2ban.service
+```
+Check fail2ban running with:
+```sh
+sudo systemctl status fail2ban.service
 ```
 
 👉 Docker installation<br>
@@ -100,7 +101,6 @@ sudo apt-get -y install docker-ce docker-ce-cli containerd.io docker-buildx-plug
 
 - Postinstallation - allows managing Docker as a ### non-root ### user
 ```sh
-APPNAME='YourApplicationName'
 sudo groupadd docker
 sudo usermod -aG docker $APPNAME
 ```
