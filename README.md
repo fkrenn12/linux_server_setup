@@ -42,6 +42,7 @@ sudo usermod -aG sudo $USERNAME
 sudo bash -c "$(declare -f create_ssh_access); create_ssh_access $USERNAME '$PUBLIC_KEY_USER'"
 sudo echo "### Creating $APPNAME ###"
 sudo adduser --gecos GECOS $APPNAME
+sudo mkdir /home/$APPNAME/source 
 # sudo usermod -aG sudo $APPNAME
 sudo bash -c "$(declare -f create_ssh_access); create_ssh_access $APPNAME '$PUBLIC_KEY_APP'"
 # configure ssh
