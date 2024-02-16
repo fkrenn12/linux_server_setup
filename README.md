@@ -73,7 +73,7 @@ curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo 
 && sudo apt install gh -y
 sudo apt install fail2ban -y
 echo "backend = systemd" | sudo tee -a /etc/fail2ban/jail.d/defaults-debian.conf > /dev/null
-sudo sudo systemctl restart fail2ban.service
+sudo systemctl restart fail2ban.service
 ```
 
 👉 Docker installation<br>
