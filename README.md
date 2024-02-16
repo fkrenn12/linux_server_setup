@@ -104,3 +104,7 @@ sudo groupadd docker
 sudo usermod -aG docker $APPNAME
 ```
 
+Datenbank kopieren
+sudo cp /var/lib/docker/volumes/{volumname}/_data /home/{username}/_data
+chown -R <user>:<group> /home/{username}/_data
+mobaxterm benutzen und in ziel volume kopieren
