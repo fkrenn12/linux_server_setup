@@ -26,6 +26,7 @@ read -p "Paste public Key for $APPNAME :" PUBLIC_KEY_APP
 ```sh
 create_ssh_access(){
   sudo mkdir -p /home/$1/.ssh && sudo touch /home/$1/.ssh/authorized_keys
+  sudo chmod go-w /home/$1
   sudo chmod 700 /home/$1/.ssh && sudo chmod 600 /home/$1/.ssh/authorized_keys
   sudo chown -R $1 /home/$1/.ssh
   echo $2 | sudo tee -a /home/$1/.ssh/authorized_keys > /dev/null
@@ -42,7 +43,8 @@ sudo bash -c "$(declare -f create_ssh_access); create_ssh_access $USERNAME '$PUB
 sudo echo "### Creating $APPNAME ###"
 sudo adduser --gecos GECOS $APPNAME
 sudo mkdir /home/$APPNAME/dummy-project
-# sudo usermod -aG sudo $APPNAME
+# adding admin to application-group
+sudo usermod -aG $APPNAME $USERNAME
 sudo bash -c "$(declare -f create_ssh_access); create_ssh_access $APPNAME '$PUBLIC_KEY_APP'"
 # configure ssh
 echo "Port $SSH_PORT" | sudo tee -a /etc/ssh/sshd_config > /dev/null
