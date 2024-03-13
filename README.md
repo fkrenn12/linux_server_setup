@@ -106,6 +106,18 @@ sudo apt-get -y install docker-ce docker-ce-cli containerd.io docker-buildx-plug
 sudo groupadd docker
 sudo usermod -aG docker $APPNAME
 ```
+Einloggen bei Github
+```sh
+gh auth login
+```
+Answer questions 
+? What account do you want to log into? GitHub.com<br>
+? What is your preferred protocol for Git operations? HTTPS <br>
+? Authenticate Git with your GitHub credentials? No <br>
+? How would you like to authenticate GitHub CLI? Login with a web browser<br>
+
+There will be a failed login! <br>
+Browse to https://github.com/login/device and authenticate with mobile auth.
 
 Datenbank kopieren
 sudo cp /var/lib/docker/volumes/{volumname}/_data /home/{username}/_data
