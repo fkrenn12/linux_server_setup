@@ -102,6 +102,7 @@ sudo apt-get -y install docker-ce docker-ce-cli containerd.io docker-buildx-plug
 ```
 
 - Postinstallation - allows managing Docker as a ### non-root ### user
+Hint: You must replace $APPNAME with appname given previous
 ```sh
 sudo groupadd docker
 sudo usermod -aG docker $APPNAME
