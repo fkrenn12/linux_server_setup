@@ -63,6 +63,7 @@ This will install: mc, htop, git, gh, fail2ban<br>
 ```sh
 sudo apt-get -y update
 sudo apt-get -y install mc
+sudo apt-get install rsync
 sudo apt-get -y install htop
 sudo apt-get -y install git
 sudo git --version
