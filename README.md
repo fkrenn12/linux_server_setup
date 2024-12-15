@@ -12,7 +12,7 @@ The best secure option is to generate two separate keys with passphrase.<br>
 
 * Define temporary variables for ssh port and names with publickey on host.
 ```sh
-SSH_PORT=250
+SSH_PORT=22
 read -p 'Administrator-Username: ' USERNAME
 echo 'Generate the keypair and copy publickey'
 read -p "Paste public Key for $USERNAME :" PUBLIC_KEY_USER
