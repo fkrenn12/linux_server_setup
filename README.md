@@ -12,7 +12,7 @@ The best secure option is to generate two separate keys with passphrase.<br>
 
 * Define temporary variables for ssh port and names with publickey on host.
 ```sh
-SSH_PORT=250
+SSH_PORT=22
 read -p 'Administrator-Username: ' USERNAME
 echo 'Generate the keypair and copy publickey'
 read -p "Paste public Key for $USERNAME :" PUBLIC_KEY_USER
@@ -63,6 +63,7 @@ This will install: mc, htop, git, gh, fail2ban<br>
 ```sh
 sudo apt-get -y update
 sudo apt-get -y install mc
+sudo apt-get -y install wget
 sudo apt-get -y install htop
 sudo apt-get -y install git
 sudo git --version
