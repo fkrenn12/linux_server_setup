@@ -4,14 +4,14 @@ It creates users with ssh and publickey authorization and installs packages for 
 
 ### Login to the new created Linux Server
 
-👉 Start putty  (if not already installed download putty.zip and extract it)
+👉 Start putty  (if not already installed download putty.zip and extract it)  
 👉 Enter IP-Address and port number 22  
 👉 Login as **root** or sudo user  
 
 ### Create user(s) with publickey ssh access  
 
 On Windows you can use "puttygen" to create publickeys. 
-The most secure option is to generate two separate keys with passphrase.<br>
+Copy the publickey from the window and store the private key for later usage for login.
 
 * Creating Admin user
  ```sh
