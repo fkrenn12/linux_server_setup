@@ -1,29 +1,24 @@
-# 🚀 Linux Server setup (Debian) 🚀
-Instructions and scripts for setup Linux Debian server for running a docker application 
-## On newly created server - before starting the installation 
-👉 Start putty<br>
-👉 Enter IP-Address and port number 22<br>
-👉 Login as **root** or sudo user<br>
+#  🐧🐧 🚀 Linux Server setup (Debian) 🚀  🐧🐧
+Instructions and scripts for setup Linux Debian server.  
+It creates users with ssh and publickey authorization and installs packages for running docker. 
 
-### Create users with publickey ssh access  
+### Login to the new created Linux Server
+
+👉 Start putty  (if not already installed download putty.zip and extract it)
+👉 Enter IP-Address and port number 22  
+👉 Login as **root** or sudo user  
+
+### Create user(s) with publickey ssh access  
 
 On Windows you can use "puttygen" to create publickeys. 
-The best secure option is to generate two separate keys with passphrase.<br>
+The most secure option is to generate two separate keys with passphrase.<br>
 
-* Define temporary variables for ssh port and names with publickey on host.
-```sh
+* Creating Admin user
+ ```sh
 SSH_PORT=22
 read -p 'Administrator-Username: ' USERNAME
 echo 'Generate the keypair and copy publickey'
 read -p "Paste public Key for $USERNAME :" PUBLIC_KEY_USER
-read -p 'Appname: ' APPNAME
-echo 'Generate the keypair and copy publickey'
-read -p "Paste public Key for $APPNAME :" PUBLIC_KEY_APP
-```
-
-* Creating users with ssh access and secured ssh ( no root login, publickey enabled ) 
-
-```sh
 create_ssh_access(){
   sudo mkdir -p /home/$1/.ssh && sudo touch /home/$1/.ssh/authorized_keys
   sudo chmod go-w /home/$1
@@ -40,23 +35,41 @@ sudo echo "### Creating $USERNAME ###"
 sudo adduser --gecos GECOS $USERNAME
 sudo usermod -aG sudo $USERNAME
 sudo bash -c "$(declare -f create_ssh_access); create_ssh_access $USERNAME '$PUBLIC_KEY_USER'"
+```
+* Creating second application user [optional]
+```sh
+SSH_PORT=22
+read -p 'Appname: ' APPNAME
+echo 'Generate the keypair and copy publickey'
+read -p "Paste public Key for $APPNAME :" PUBLIC_KEY_APP
+create_ssh_access(){
+  sudo mkdir -p /home/$1/.ssh && sudo touch /home/$1/.ssh/authorized_keys
+  sudo chmod go-w /home/$1
+  sudo chmod 700 /home/$1/.ssh && sudo chmod 600 /home/$1/.ssh/authorized_keys
+  sudo chown -R $1 /home/$1/.ssh
+  echo $2 | sudo tee -a /home/$1/.ssh/authorized_keys > /dev/null
+  sudo echo "Match User $1
+        X11Forwarding no
+        AllowTcpForwarding yes
+        GatewayPorts yes
+        PermitTunnel yes" > /etc/ssh/sshd_config.d/$1.conf
+}
 sudo echo "### Creating $APPNAME ###"
 sudo adduser --gecos GECOS $APPNAME
 sudo mkdir /home/$APPNAME/dummy-project
-# adding admin to application-group
-sudo usermod -aG $APPNAME $USERNAME
 sudo bash -c "$(declare -f create_ssh_access); create_ssh_access $APPNAME '$PUBLIC_KEY_APP'"
 # configure ssh
-echo "Port $SSH_PORT" | sudo tee -a /etc/ssh/sshd_config > /dev/null
-echo 'PubkeyAuthentication yes' | sudo tee -a /etc/ssh/sshd_config > /dev/null
-sudo sed -i '/^PermitRootLogin[ \t]\+\w\+$/{ s//PermitRootLogin no/g; }' /etc/ssh/sshd_config
-sudo sed -i '/^PasswordAuthentication[ \t]\+\w\+$/{ s//PasswordAuthentication no/g; }' /etc/ssh/sshd_config
-sudo systemctl restart ssh.service
-sudo reboot
 ```
-👉 Relogin now as admin user over ssh with publickey authentication on the new port
 
-## Installation
+* Creating users with ssh access and secured ssh ( no root login, publickey enabled ) 
+
+# Adding admin to group application (if application user was created before)
+```sh
+sudo usermod -aG $APPNAME $USERNAME
+```
+👉 Relogin now as admin user over ssh with publickey authentication
+
+## Installation of packages
 👉 Copy and run installation scripts<br>
 This will install: mc, htop, git, gh, fail2ban<br>
 
