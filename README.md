@@ -61,13 +61,11 @@ sudo bash -c "$(declare -f create_ssh_access); create_ssh_access $APPNAME '$PUBL
 # configure ssh
 ```
 
-* Creating users with ssh access and secured ssh ( no root login, publickey enabled ) 
-
-# Adding admin to group application (if application user was created before)
+### Adding admin to group application (if application user was created before)
 ```sh
 sudo usermod -aG $APPNAME $USERNAME
 ```
-👉 Relogin now as admin user over ssh with publickey authentication
+👉 With putty relogin now as admin user over ssh with publickey authentication
 
 ## Installation of packages
 👉 Copy and run installation scripts<br>
@@ -135,7 +133,3 @@ Answer questions
 There will be a failed login! <br>
 Browse to https://github.com/login/device and authenticate with mobile auth.
 
-Datenbank kopieren
-sudo cp /var/lib/docker/volumes/{volumname}/_data /home/{username}/_data
-chown -R <user>:<group> /home/{username}/_data
-mobaxterm benutzen und in ziel volume kopieren
