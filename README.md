@@ -119,22 +119,9 @@ SSHD_CONFIG="/etc/ssh/sshd_config"
 # create backup from original
 cp $SSHD_CONFIG ${SSHD_CONFIG}.backup
 # deactivate password login
-if grep -q "^#PasswordAuthentication" $SSHD_CONFIG; then
-    sed -i "s/^#PasswordAuthentication yes/PasswordAuthentication no/" $SSHD_CONFIG
-elif grep -q "^PasswordAuthentication" $SSHD_CONFIG; then
-    sed -i "s/^PasswordAuthentication yes/PasswordAuthentication no/" $SSHD_CONFIG
-else
-    echo "PasswordAuthentication no" >> $SSHD_CONFIG
-fi
-
-# deativate root-login
-if grep -q "^#PermitRootLogin" $SSHD_CONFIG; then
-    sed -i "s/^#PermitRootLogin yes/PermitRootLogin no/" $SSHD_CONFIG
-elif grep -q "^PermitRootLogin" $SSHD_CONFIG; then
-    sed -i "s/^PermitRootLogin yes/PermitRootLogin no/" $SSHD_CONFIG
-else
-    echo "PermitRootLogin no" >> $SSHD_CONFIG
-fi
+sed -i -Ee 's/^#?(PasswordAuthentication)[[:space:]].*/\1 no/' /etc/ssh/sshd_config
+# deactivate root-login
+sed -i -Ee 's/^#?(PermitRootLogin)[[:space:]].*/\1 no/' /etc/ssh/sshd_config
 ```
 
 - Post installation - allows managing Docker as a ### non-root ### user
