@@ -8,7 +8,7 @@ It creates users with ssh and publickey authorization and installs packages for 
 👉 Enter IP-Address and port number 22  
 👉 Login as **root** or sudo user  
 
-### Create user(s) with publickey ssh access  
+### 👉  Create user(s) with publickey ssh access  
 
 On Windows you can use "puttygen" to create publickeys. 
 Copy the publickey from the window and store the private key for later usage for login.
@@ -93,10 +93,8 @@ Check fail2ban running with:
 ```sh
 sudo systemctl status fail2ban.service
 ```
-
-👉 Docker installation<br>
-Look here for details 
-[Docker installation on Debian](https://docs.docker.com/engine/install/debian/)<br>
+## 👉 Docker installation  
+Look here for details [Docker installation on Debian](https://docs.docker.com/engine/install/debian/)  
 - Set up Docker's apt repository.
 - Add the repository to Apt sources 
 - Installing packages
@@ -114,7 +112,7 @@ sudo echo \
 sudo apt-get update
 sudo apt-get -y install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 ```
-sshd_config - prevent root login and no password login
+## 👉  prevent further root login and no password login
 ```shell
 # path to configuration file
 SSHD_CONFIG="/etc/ssh/sshd_config"
@@ -137,11 +135,8 @@ elif grep -q "^PermitRootLogin" $SSHD_CONFIG; then
 else
     echo "PermitRootLogin no" >> $SSHD_CONFIG
 fi
+```
 
-# service restart
-systemctl restart sshd
-fi
-```  
 - Post installation - allows managing Docker as a ### non-root ### user
 ```sh
 sudo groupadd docker
@@ -160,3 +155,13 @@ Answer questions
 There will be a failed login! <br>
 Browse to https://github.com/login/device and authenticate with mobile auth.
 
+```shell
+# sshd service restart
+systemctl restart sshd
+fi
+```
+
+```shell
+# reboot
+reboot now
+```
