@@ -158,7 +158,6 @@ Browse to https://github.com/login/device and authenticate with mobile auth.
 ```shell
 # sshd service restart
 systemctl restart sshd
-fi
 ```
 
 ```shell
