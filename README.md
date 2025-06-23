@@ -114,8 +114,35 @@ sudo echo \
 sudo apt-get update
 sudo apt-get -y install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 ```
+sshd_config - prevent root login and no password login
+```shell
+# path to configuration file
+SSHD_CONFIG="/etc/ssh/sshd_config"
+# create backup from original
+cp $SSHD_CONFIG ${SSHD_CONFIG}.backup
+# deactivate password login
+if grep -q "^#PasswordAuthentication" $SSHD_CONFIG; then
+    sed -i "s/^#PasswordAuthentication yes/PasswordAuthentication no/" $SSHD_CONFIG
+elif grep -q "^PasswordAuthentication" $SSHD_CONFIG; then
+    sed -i "s/^PasswordAuthentication yes/PasswordAuthentication no/" $SSHD_CONFIG
+else
+    echo "PasswordAuthentication no" >> $SSHD_CONFIG
+fi
 
-- Postinstallation - allows managing Docker as a ### non-root ### user
+# deativate root-login
+if grep -q "^#PermitRootLogin" $SSHD_CONFIG; then
+    sed -i "s/^#PermitRootLogin yes/PermitRootLogin no/" $SSHD_CONFIG
+elif grep -q "^PermitRootLogin" $SSHD_CONFIG; then
+    sed -i "s/^PermitRootLogin yes/PermitRootLogin no/" $SSHD_CONFIG
+else
+    echo "PermitRootLogin no" >> $SSHD_CONFIG
+fi
+
+# service restart
+systemctl restart sshd
+fi
+```  
+- Post installation - allows managing Docker as a ### non-root ### user
 ```sh
 sudo groupadd docker
 sudo usermod -aG docker $APPNAME
