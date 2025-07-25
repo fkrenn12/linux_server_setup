@@ -1,18 +1,21 @@
 #  🐧🐧 🚀 Linux Server setup (Debian) 🚀  🐧🐧
 Instructions and scripts for setup Linux Debian server.  
-It creates users with ssh and publickey authorization and installs packages for running docker. 
+It creates users with ssh and publickey authorization and installs packages for running docker.
 
+---
 ### Login to the new created Linux Server
 
 👉 Start putty  (if not already installed download putty.zip and extract it)  
 👉 Enter IP-Address and port number 22  
 👉 Login as **root** or sudo user  
 
+---
 ### 👉  Create user(s) with publickey ssh access  
 
 On Windows you can use "puttygen" to create publickeys. 
 Copy the publickey from the window and store the private key for later usage for login.
 
+---
 * Creating Admin user
  ```sh
 SSH_PORT=22
@@ -36,6 +39,8 @@ sudo adduser --gecos GECOS $USERNAME
 sudo usermod -aG sudo $USERNAME
 sudo bash -c "$(declare -f create_ssh_access); create_ssh_access $USERNAME '$PUBLIC_KEY_USER'"
 ```
+
+---
 * Creating second application user [optional]
 ```sh
 SSH_PORT=22
@@ -60,13 +65,14 @@ sudo mkdir /home/$APPNAME/dummy-project
 sudo bash -c "$(declare -f create_ssh_access); create_ssh_access $APPNAME '$PUBLIC_KEY_APP'"
 # configure ssh
 ```
-
+---
 ### Adding admin to group application (if application user was created before)
 ```sh
 sudo usermod -aG $APPNAME $USERNAME
 ```
 👉 With putty relogin now as admin user over ssh with publickey authentication
 
+---
 ## Installation of packages
 👉 Copy and run installation scripts<br>
 This will install: mc, htop, git, gh, fail2ban<br>
@@ -93,6 +99,8 @@ Check fail2ban running with:
 ```sh
 sudo systemctl status fail2ban.service
 ```
+
+---
 ## 👉 Docker installation  
 Look here for details [Docker installation on Debian](https://docs.docker.com/engine/install/debian/)  
 - Set up Docker's apt repository.
@@ -112,6 +120,8 @@ sudo echo \
 sudo apt-get update
 sudo apt-get -y install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 ```
+
+---
 ## 👉  prevent further root login and no password login
 ```shell
 # path to configuration file
@@ -124,6 +134,7 @@ sed -i -Ee 's/^#?(PasswordAuthentication)[[:space:]].*/\1 no/' /etc/ssh/sshd_con
 sed -i -Ee 's/^#?(PermitRootLogin)[[:space:]].*/\1 no/' /etc/ssh/sshd_config
 ```
 
+---
 - Post installation - allows managing Docker as a ### non-root ### user
 ```sh
 sudo groupadd docker
