@@ -15,7 +15,6 @@ It creates users with ssh and publickey authorization and installs packages for 
 On Windows you can use "puttygen" to create publickeys. 
 Copy the publickey from the window and store the private key for later usage for login.
 
----
 * Creating Admin user
  ```sh
 SSH_PORT=22
@@ -40,7 +39,6 @@ sudo usermod -aG sudo $USERNAME
 sudo bash -c "$(declare -f create_ssh_access); create_ssh_access $USERNAME '$PUBLIC_KEY_USER'"
 ```
 
----
 * Creating second application user [optional]
 ```sh
 SSH_PORT=22
