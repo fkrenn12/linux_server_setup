@@ -81,6 +81,7 @@ sudo apt-get -y install mc
 sudo apt-get -y install wget
 sudo apt-get -y install unzip
 sudo apt-get install rsync
+sudo apt-get install systemd-timesyncd
 sudo apt-get -y install htop
 sudo apt-get -y install git
 sudo git --version
@@ -92,6 +93,7 @@ curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo 
 sudo apt install fail2ban -y
 echo "backend = systemd" | sudo tee -a /etc/fail2ban/jail.d/defaults-debian.conf > /dev/null
 sudo systemctl restart fail2ban.service
+sudo timedatectl set-ntp true
 ```
 Check fail2ban running with:
 ```sh
